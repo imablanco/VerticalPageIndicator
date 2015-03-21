@@ -46,6 +46,6 @@ You can see the example at VerticalPageIndicatorSample
 
 #License
 
-This project has a MIT License, so feel free to use as you want
+This project has a MIT License, so feel free to use it as you want
 
 
