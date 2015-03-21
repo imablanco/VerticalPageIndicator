@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="VerticalPageIndicator">
+        <attr name="vpiselectedcolor" format="color" />
+        <attr name="vpiunselectedcolor" format="color" />
+        <attr name="vpisize" format="integer" />
+    </declare-styleable>
+</resources>
