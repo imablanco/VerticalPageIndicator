@@ -6,6 +6,7 @@ package ablancoca.verticalpageindicator;
  */
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.database.DataSetObserver;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -23,6 +24,7 @@ public class VerticalPageIndicator extends LinearLayout {
     private int childCount;
     private LinearLayout container;
     private int size;
+    private DataSetObserver dataSetObserver;
 
     public VerticalPageIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -53,7 +55,6 @@ public class VerticalPageIndicator extends LinearLayout {
             @Override
             public void run() {
                 childCount = pager.getAdapter().getCount();
-                removeAllViews();
                 init(pager);
 
             }
@@ -69,7 +70,7 @@ public class VerticalPageIndicator extends LinearLayout {
      * Init the rendering of the indicator view
      * @param pager
      */
-    private void init(VerticalViewPager pager) {
+    private void init(final VerticalViewPager pager) {
         container = new LinearLayout(getContext());
         LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
@@ -77,16 +78,19 @@ public class VerticalPageIndicator extends LinearLayout {
         container.setLayoutParams(params);
         addView(container);
 
-        for(int i = 0; i<childCount;i++){
-            View v = new View(getContext());
-            LinearLayout.LayoutParams viewParams = new LayoutParams(convertDpToPixel(size),convertDpToPixel(size));
-            viewParams.topMargin=size/2;
-            viewParams.bottomMargin = size/2;
-            v.setBackgroundResource(R.drawable.indicator_shape);
-            v.setLayoutParams(viewParams);
+        dataSetObserver = new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                childCount = pager.getAdapter().getCount();
+                generateIndicators();
+                setCurrentItem(pager.getCurrentItem());
+            }
+        };
 
-            container.addView(v);
-        }
+        pager.getAdapter().registerDataSetObserver(dataSetObserver);
+
+        generateIndicators();
 
         setCurrentItem(pager.getCurrentItem());
 
@@ -108,6 +112,23 @@ public class VerticalPageIndicator extends LinearLayout {
         });
 
 
+    }
+
+
+    private void generateIndicators(){
+        container.removeAllViews();
+
+        for(int i = 0; i<childCount;i++){
+            View v = new View(getContext());
+            LinearLayout.LayoutParams viewParams = new LayoutParams(convertDpToPixel(size),convertDpToPixel(size));
+            viewParams.gravity = Gravity.CENTER;
+            viewParams.topMargin=size/2;
+            viewParams.bottomMargin = size/2;
+            v.setBackgroundResource(R.drawable.indicator_shape);
+            v.setLayoutParams(viewParams);
+
+            container.addView(v);
+        }
     }
 
     /**
