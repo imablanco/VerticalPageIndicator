@@ -24,11 +24,11 @@ You can set the attributes in code too:
 
 ```
 
-In order to use VerticalPageIndicator correctly, you should call 
+In order to use VerticalPageIndicator, you should call 
 ```java 
   setVerticalViewPager(VerticalViewPager pager);
 ```
-after settign the VerticalViewPager adapter;
+after settign the VerticalViewPager's adapter;
 
 #Examples
 
@@ -42,7 +42,8 @@ after settign the VerticalViewPager adapter;
   indicator.setVerticalViewPager(pager);
 ```
 
-You can see the example at VerticalPageIndicatorSample
+You can see the example at VerticalPageIndicatorSample. Use the menu action Add Page to see how the indicator changes
+dynamically when new items added to the VerticalViewPager.
 
 #License
 
